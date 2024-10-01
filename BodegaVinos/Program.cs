@@ -1,8 +1,6 @@
 using BodegaVinos.Interfaces;
 using BodegaVinos.Repositories;
 using BodegaVinos.Services;
-using WineApi.Repositories;
-using WineApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

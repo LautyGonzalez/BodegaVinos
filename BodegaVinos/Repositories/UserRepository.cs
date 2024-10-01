@@ -1,11 +1,7 @@
 ﻿using BodegaVinos.Entities;
 using BodegaVinos.Interfaces;
-using System.Collections.Generic;
-using System.Linq;
-using BodegaVinos.Interfaces;
-using BodegaVinos.Entities;
 
-namespace WineApi.Repositories
+namespace BodegaVinos.Repositories
 {
     public class UserRepository : IUserRepository
     {

@@ -2,7 +2,7 @@
 using BodegaVinos.Interfaces;
 using System.Collections.Generic;
 
-namespace WineApi.Services
+namespace BodegaVinos.Services
 {
     public class WineService : IWineService
     {

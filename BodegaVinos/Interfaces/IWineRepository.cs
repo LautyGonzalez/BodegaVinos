@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using BodegaVinos.Entities;
+﻿using BodegaVinos.Entities;
 
 namespace BodegaVinos.Interfaces
 {
