@@ -1,6 +1,9 @@
 ﻿using BodegaVinos.Entities;
+using BodegaVinos.DTOs;
 using BodegaVinos.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using BodegaVinos.Interfaces.Services;
 
 namespace BodegaVinos.Controllers
 {
@@ -16,15 +19,28 @@ namespace BodegaVinos.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateUser([FromBody] User user)
+        public IActionResult CreateUser([FromBody] UserCreateDto userDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
+            var user = new User
+            {
+                Username = userDto.Username,
+                Password = userDto.Password
+            };
+
             _userService.AddUser(user);
-            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
+
+            var responseDto = new UserResponseDto
+            {
+                Id = user.Id,
+                Username = user.Username
+            };
+
+            return CreatedAtAction(nameof(GetUser), new { id = user.Id }, responseDto);
         }
 
         [HttpGet("{id}")]
@@ -35,7 +51,14 @@ namespace BodegaVinos.Controllers
             {
                 return NotFound();
             }
-            return Ok(user);
+
+            var userDto = new UserResponseDto
+            {
+                Id = user.Id,
+                Username = user.Username
+            };
+
+            return Ok(userDto);
         }
     }
 }

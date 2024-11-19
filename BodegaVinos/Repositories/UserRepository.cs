@@ -1,35 +1,46 @@
-﻿using BodegaVinos.Entities;
-using BodegaVinos.Interfaces;
+﻿using BodegaVinos.Data;
+using BodegaVinos.Entities;
+using BodegaVinos.Interfaces.Respository;
+
 
 namespace BodegaVinos.Repositories
 {
     public class UserRepository : IUserRepository
     {
-        private readonly List<User> _users = new List<User>();
-        private int _nextId = 1;
+        private readonly BodegaContext _context;
 
-        public IEnumerable<User> GetAll() => _users;
+        public UserRepository(BodegaContext context)
+        {
+            _context = context;
+        }
 
-        public User GetById(int id) => _users.FirstOrDefault(u => u.Id == id);
+
+        public IEnumerable<User> GetAll() => _context.Users.ToList();
+
+        public User GetById(int id) => _context.Users.FirstOrDefault(u => u.Id == id);
 
         public void Add(User user)
         {
-            user.Id = _nextId++;
-            _users.Add(user);
+            _context.Add(user);
+            _context.SaveChanges();
         }
 
         public void Update(User user)
         {
-            var index = _users.FindIndex(u => u.Id == user.Id);
-            if (index != -1)
-                _users[index] = user;
+            _context.Users.Update(user);
+            _context.SaveChanges();
         }
 
         public void Delete(int id)
         {
             var user = GetById(id);
             if (user != null)
-                _users.Remove(user);
+                _context.Users.Remove(user);
+        }
+
+        public User? Get(string username)
+        {
+            return _context.Users.FirstOrDefault(u => u.Username == username);
         }
     }
 }

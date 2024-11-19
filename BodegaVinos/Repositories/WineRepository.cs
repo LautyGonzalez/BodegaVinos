@@ -1,5 +1,7 @@
-﻿using BodegaVinos.Entities;
-using BodegaVinos.Interfaces;
+﻿using BodegaVinos.Data;
+using BodegaVinos.Entities;
+using BodegaVinos.Interfaces.Respository;
+using Microsoft.EntityFrameworkCore;
 
 namespace BodegaVinos.Repositories
 {
@@ -20,11 +22,10 @@ namespace BodegaVinos.Repositories
         public Wine GetById(int id)
         {
             return _context.Wines
-                .Include(w => w.Catas)
                 .FirstOrDefault(w => w.Id == id);
         }
 
-        public IEnumerable<Wine> GetByVariety(string variety)
+        public IEnumerable<Wine> GetWineByVariety(string variety)
         {
             return _context.Wines
                 .Where(w => w.Variety.ToLower() == variety.ToLower() && w.Stock > 0)
@@ -47,7 +48,7 @@ namespace BodegaVinos.Repositories
             }
         }
 
-        public void UpdateStock(int id, int newStock)
+        public Wine UpdateStockById(int id, int newStock)
         {
             var wine = _context.Wines.Find(id);
             if (wine != null)
@@ -55,6 +56,8 @@ namespace BodegaVinos.Repositories
                 wine.Stock = newStock;
                 _context.SaveChanges();
             }
+
+            return wine;
         }
 
         public void Delete(int id)

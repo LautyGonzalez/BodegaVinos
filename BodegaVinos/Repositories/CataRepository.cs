@@ -1,5 +1,6 @@
-﻿using BodegaVinos.Entities;
-using BodegaVinos.Interfaces;
+﻿using BodegaVinos.Data;
+using BodegaVinos.Entities;
+using BodegaVinos.Interfaces.Respository;
 using Microsoft.EntityFrameworkCore;
 
 namespace BodegaVinos.Repositories
@@ -35,10 +36,21 @@ namespace BodegaVinos.Repositories
 
         public void Update(Cata cata)
         {
-            var existingCata = _context.Catas.Find(cata.Id);
+            var existingCata = _context.Catas
+                .Include(c => c.Wines)
+                .FirstOrDefault(c => c.Id == cata.Id);
+
             if (existingCata != null)
             {
+
                 _context.Entry(existingCata).CurrentValues.SetValues(cata);
+
+                existingCata.Wines.Clear();
+                foreach (var wine in cata.Wines)
+                {
+                    existingCata.Wines.Add(wine);
+                }
+
                 _context.SaveChanges();
             }
         }

@@ -1,5 +1,6 @@
 ﻿using BodegaVinos.Entities;
-using BodegaVinos.Interfaces;
+using BodegaVinos.Interfaces.Respository;
+using BodegaVinos.Interfaces.Services;
 using System.Collections.Generic;
 
 namespace BodegaVinos.Services
@@ -22,5 +23,8 @@ namespace BodegaVinos.Services
         public void UpdateWine(Wine wine) => _wineRepository.Update(wine);
 
         public void DeleteWine(int id) => _wineRepository.Delete(id);
+        public IEnumerable<Wine> GetWineByVariety(string variety) => _wineRepository.GetWineByVariety(variety);
+
+        public Wine UpdateStockById(int id, int newStock) => _wineRepository.UpdateStockById(id, newStock);
     }
 }
